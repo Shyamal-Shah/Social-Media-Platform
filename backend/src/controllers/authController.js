@@ -1,5 +1,6 @@
 const registerUser = async (req, res) => {
-  res.jon({ message: "Register" });
+  throw new Error("Error");
+  res.json({ message: "Register" });
 };
 
 const loginUser = async (req, res) => {
