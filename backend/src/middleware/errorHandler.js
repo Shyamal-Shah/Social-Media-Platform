@@ -7,7 +7,6 @@ const {
   BadRequestError,
 } = require("../utils/error");
 const logger = require("../utils/logger")(module.filename);
-const { ValidationError } = require("express-validation");
 
 const handleErrors = (err, req, res, next) => {
   const defaultError = {
@@ -28,13 +27,7 @@ const handleErrors = (err, req, res, next) => {
 const convertErrors = (err, req, res, next) => {
   let convertedError = err;
 
-  if (err instanceof ValidationError) {
-    convertedError = new InternalServerError({
-      message: "Validation Error",
-      status: err.status || httpStatus.INTERNAL_SERVER_ERROR,
-      stack: err.stack,
-    });
-  } else if (
+  if (
     !(err instanceof InternalServerError) &&
     !(err instanceof NotFoundError) &&
     !(err instanceof UnauthorizedError) &&
