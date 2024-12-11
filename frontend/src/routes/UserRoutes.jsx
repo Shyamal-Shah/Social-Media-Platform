@@ -1,18 +1,18 @@
 import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Dashboard from "../views/Dashboard";
+import { useSelector } from "react-redux";
 
 const ProtectRoutes = ({ children }) => {
-  //   const navigate = useNavigate();
-  //   useEffect(() => {
-  //     if (!loggedInUser) {
-  //       console.log("Logging out");
-  //       navigate("/login");
-  //     } else if (loggedInUser?.newPassword) {
-  //       navigate("/change-password");
-  //     }
-  //   }, [navigate, loggedInUser]);
+  const loggedInUser = useSelector((state) => state.authReducer.user);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (!loggedInUser) {
+      console.log("Logging out");
+      navigate("/sign-in");
+    }
+  }, [navigate, loggedInUser]);
 
   return children;
 };

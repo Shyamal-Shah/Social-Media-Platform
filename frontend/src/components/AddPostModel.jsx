@@ -18,7 +18,7 @@ export default function AddPostModel({ isOpen, onClose, onSave }) {
   const [captionError, setCaptionError] = useState(null);
   const [imageError, setImageError] = useState(null);
 
-  const handleSave = () => {
+  const handleSave = async () => {
     const caption = captionRef.current.value;
     const image = fileRef.current.files[0];
     let isValid = true;
@@ -37,7 +37,7 @@ export default function AddPostModel({ isOpen, onClose, onSave }) {
       setImageError("Image size should be less than 5MB");
     else setImageError(null);
 
-    if (isValid) onSave({ caption, image });
+    if (isValid) await onSave({ caption, image });
   };
 
   return (

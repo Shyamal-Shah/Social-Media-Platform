@@ -5,10 +5,10 @@ const Post = ({ posts = [], onCommentsClick, onAddCommentClick }) => {
   return (
     <div className="mx-auto max-w-2xl gap-x-8 gap-y-10 lg:mx-0 lg:max-w-none ">
       {posts.map((post, index) => {
-        const handleAddComment = () => {
+        const handleAddComment = async () => {
           const comment = document.getElementById(`comment-${index}`).value;
-          onAddCommentClick(index, comment);
           document.getElementById(`comment-${index}`).value = "";
+          await onAddCommentClick(index, comment);
         };
         return (
           <article

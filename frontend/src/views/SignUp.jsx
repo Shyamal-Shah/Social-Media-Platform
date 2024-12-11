@@ -1,4 +1,8 @@
 import React from "react";
+import { handleSignUp } from "../services/AuthService";
+import { useDispatch } from "react-redux";
+import { setUser } from "../store/userSlice";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const emailRef = React.useRef(null);
@@ -9,8 +13,10 @@ const SignUp = () => {
   const [passwordError, setPasswordError] = React.useState("");
   const [confirmPasswordError, setConfirmPasswordError] = React.useState("");
   const [usernameError, setUsernameError] = React.useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = emailRef.current.value;
     const password = passwordRef.current.value;
@@ -58,7 +64,13 @@ const SignUp = () => {
       setConfirmPasswordError("");
     }
 
-    if (isValid) console.log(email, password);
+    if (isValid) {
+      const data = await handleSignUp(email, password, username);
+      if (data) {
+        dispatch(setUser(data));
+        navigate("/", { replace: true });
+      }
+    }
   };
   return (
     <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
