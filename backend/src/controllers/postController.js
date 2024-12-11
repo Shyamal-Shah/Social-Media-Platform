@@ -11,7 +11,7 @@ const createPost = async (req, res) => {
     if (!caption) {
       throw new BadRequestError("Caption is required.");
     }
-    
+
     if (!req.file) {
       throw new BadRequestError("Image file is required");
     } else {

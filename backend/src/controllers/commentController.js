@@ -1,6 +1,5 @@
 const { convertErrors } = require("../middleware/errorHandler");
 const { BadRequestError } = require("../utils/error");
-const { v4: uuidv4 } = require("uuid");
 const Post = require("../models/Post");
 
 const createComment = async (req, res) => {
@@ -19,7 +18,6 @@ const createComment = async (req, res) => {
       post.comments.push({
         user: req.user._id,
         comment,
-        id: uuidv4(),
       });
       await post.save();
       res.status(201).json({ message: "Comment created successfully.", post });
@@ -47,6 +45,7 @@ const updateComment = async (req, res) => {
     }
     post.comments[commentIndex].comment = req.body.comment;
     await post.save();
+    res.status(200).json({ message: "Comment updated successfully.", post });
   } catch (error) {
     convertErrors(error, req, res);
   }
