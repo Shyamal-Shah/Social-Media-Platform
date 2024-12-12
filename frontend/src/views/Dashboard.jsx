@@ -7,6 +7,8 @@ import { addComment, createPost, fetchPosts } from "../services/PostService";
 import { addPost, setPosts, updatePost } from "../store/postSlice";
 import { toast } from "react-toastify";
 
+import socket from "../services/socket";
+
 const Dashboard = () => {
   const dispatch = useDispatch();
 
@@ -18,6 +20,27 @@ const Dashboard = () => {
       .catch((error) => {
         toast.error(error);
       });
+
+    socket.on("postUpdates", (data) => {
+      console.log(data);
+
+      if (data.event === "newPost") {
+        dispatch(addPost(data.post));
+      }
+    });
+
+    socket.on("commentUpdates", (data) => {
+      console.log(data);
+
+      if (data.event === "newComment") {
+        dispatch(updatePost(data.post));
+      }
+    });
+
+    return () => {
+      socket.off("postUpdates");
+      socket.off("commentUpdates");
+    };
   }, []);
 
   const posts = useSelector((state) => state.postsReducer.posts || []);
@@ -29,7 +52,7 @@ const Dashboard = () => {
 
   const saveNewPost = async ({ caption, image }) => {
     const data = await createPost(caption, image);
-    dispatch(addPost(data.post));
+    // dispatch(addPost(data.post));
     setIsAddPostModelOpen(false);
   };
 
@@ -40,9 +63,9 @@ const Dashboard = () => {
 
   const handleAddComment = async (index, comment) => {
     const data = await addComment(posts[index]._id, comment);
-    if (data) {
-      dispatch(updatePost(data.post));
-    }
+    // if (data) {
+    //   dispatch(updatePost(data.post));
+    // }
   };
 
   return (
