@@ -2,6 +2,8 @@ const { BadRequestError } = require("../utils/error");
 const Post = require("../models/Post");
 const { uploadFile } = require("../middleware/fileUpload");
 const { convertErrors } = require("../middleware/errorHandler");
+const Redis = require("ioredis");
+const redis = new Redis();
 
 const createPost = async (req, res) => {
   try {
@@ -25,6 +27,15 @@ const createPost = async (req, res) => {
     });
 
     await post.save();
+
+    const newPost = await Post.findOne({ _id: post._id, isActive: true })
+      .populate("user", "username email")
+      .populate("comments.user", "username");
+
+    redis.publish(
+      "postUpdates",
+      JSON.stringify({ event: "newPost", post: newPost })
+    );
 
     res.status(201).json({ message: "Post created successfully.", post });
   } catch (error) {

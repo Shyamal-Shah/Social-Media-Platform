@@ -1,7 +1,7 @@
 const express = require("express");
 const commentController = require("../../controllers/commentController");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });;
 
 /**
  * @swagger
@@ -84,35 +84,6 @@ router.post("/", commentController.createComment);
  *         description: Internal server error
  */
 
-/**
- * @swagger
- * /posts/{postId}/comments/{commentId}:
- *   delete:
- *     summary: Delete a comment
- *     tags: [Comments]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: postId
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the post
- *       - in: path
- *         name: commentId
- *         schema:
- *           type: string
- *         required: true
- *         description: The ID of the comment to delete
- *     responses:
- *       200:
- *         description: Comment deleted successfully
- *       404:
- *         description: Comment or post not found
- *       500:
- *         description: Internal server error
- */
 
 router
   .route("/:id")

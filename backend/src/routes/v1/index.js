@@ -1,7 +1,7 @@
 const express = require("express");
 const authenticate = require("../../middleware/authMiddleware");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 // Auth Routes
 router.use("/auth", require("./authRoutes"));
