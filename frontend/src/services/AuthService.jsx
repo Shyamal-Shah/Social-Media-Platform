@@ -1,4 +1,5 @@
 import api from "./api";
+
 import { toast } from "react-toastify";
 
 const handleSignIn = async (email, password) => {
@@ -30,3 +31,4 @@ const handleSignUp = async (email, password, username) => {
 };
 
 export { handleSignIn, handleSignUp };
+
